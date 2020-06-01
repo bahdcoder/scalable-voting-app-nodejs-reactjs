@@ -16,6 +16,7 @@
     "express": "^4.17.1",
     "indicative": "^7.4.4",
     "mongodb": "^3.5.8",
+    "redis": "^3.0.2",
     "uuid": "^8.1.0"
   },
   "devDependencies": {

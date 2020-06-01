@@ -6,12 +6,12 @@ const createVotes = require('../handlers/create-votes')
 const createPollsValidator = require('../validators/create-polls')
 const createVotesValidator = require('../validators/create-votes')
 
-module.exports = (app, db) => {
+module.exports = (app, db, redisDb) => {
     const router = new Router()
 
     router.post('/polls', createPollsValidator, createPolls(db))
 
-    router.put('/polls/:poll', createVotesValidator, createVotes(db))
+    router.put('/polls/:poll', createVotesValidator, createVotes(db, redisDb))
 
     router.get('/polls/:poll', getPoll(db))
 
