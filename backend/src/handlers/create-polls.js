@@ -16,7 +16,8 @@ module.exports = (db) => {
 
         return response.json({
             message: 'Poll created.',
-            pollId: data._id
+            pollId: data._id,
+            data
         })
     }
 }
