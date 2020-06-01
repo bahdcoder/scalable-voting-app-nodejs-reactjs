@@ -7,13 +7,14 @@ const app = Express()
 
 setupMiddleware(app)
 
-setupDatabase()
-    .then((client) => {
+async function start() {
+    const db = await setupDatabase()
+    setupRouter(app, db)
 
-        setupRouter(app, client)
-
-        app.listen(4000, () => {
-            console.log('Server started on port 4000')
-        })
+    app.listen(4000, () => {
+        console.log('Server started on port 4000')
     })
-    .catch(console.error)
+}
+
+
+start().catch(console.error)
