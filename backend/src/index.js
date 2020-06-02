@@ -1,3 +1,4 @@
+const Config = require('./config')
 const Express = require('express')
 const setupRedis = require('./setup/redis')
 const setupRouter = require('./setup/router')
@@ -14,8 +15,8 @@ async function start() {
 
     setupRouter(app, db, redisDb)
 
-    app.listen(4000, () => {
-        console.log('Server started on port 4000')
+    app.listen(Config.port, () => {
+        console.log('Server started on port', Config.port)
     })
 }
 
