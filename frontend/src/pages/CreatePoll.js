@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import React, { useState, Fragment } from 'react'
 
 export default function CreatePoll() {
@@ -33,6 +34,21 @@ export default function CreatePoll() {
         setChoices(newChoices)
     }
 
+    const updatePollsToLocalStorage = (successData) => {
+        const existingPolls = JSON.parse(localStorage.getItem('polls')) || []
+
+        const updatedPolls = [
+            ...existingPolls,
+            {
+                title,
+                id: successData.pollId
+            }
+        ]
+
+        localStorage.setItem('polls', 
+        JSON.stringify(updatedPolls))
+    }
+
     const createPoll = async () => {
         const response = await fetch(`${process.env.REACT_APP_API_URL}/polls`, {
             method: 'POST',
@@ -55,6 +71,7 @@ export default function CreatePoll() {
         }
 
         setSuccess(data)
+        updatePollsToLocalStorage(data)
     }
 
     return (
@@ -67,7 +84,9 @@ export default function CreatePoll() {
               {success.pollId ? (
                   <div className="py-5 px-8">
                       <div className="w-full mb-2 bg-green-100 text-green-500 border border-green-500 rounded py-3 px-2">
-                          Poll created successfully. 
+                          Poll created successfully. <Link to={`/polls/${success.pollId}`}>
+                              {process.env.REACT_APP_APP_URL}/polls/{success.pollId}
+                          </Link>
                       </div>
                   </div>
               ) : null}
