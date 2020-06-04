@@ -25,7 +25,7 @@ export default function ViewPoll({ match }) {
 
     useEffect(() => {
         fetchPoll()
-    }, [])
+    }, [voted])
 
     useEffect(() => {
         fetchClientIpAddress()
@@ -46,6 +46,26 @@ export default function ViewPoll({ match }) {
         setVoted(true)
     }
 
+    const getTotalVotes = () => {
+        let totalVotes = 0
+
+        poll.choices.forEach(choice => {
+            totalVotes += choice.count
+        })
+
+        return totalVotes
+    }
+
+    const getChoicePercentage = (selectedChoice) => {
+        const totalVotes = getTotalVotes()
+
+        if (totalVotes === 0) {
+            return 0
+        }
+        
+        return Math.round((selectedChoice.count / totalVotes) * 100)
+    }
+
     return (
         <div className="container mx-auto mt-16 px-5">
             <h1 className="my-5 text-3xl text-center">
@@ -56,6 +76,10 @@ export default function ViewPoll({ match }) {
                 <div className="w-full max-w-3xl mx-auto bg-white shadow">
                     <header className='px-5 py-4 flex justify-between items-center'>
                         {poll.title}
+
+                        {voted && <span>{getTotalVotes()} votes</span>}
+
+                        <Button onClick={() => setVoted(true)}>View results</Button>
                     </header>
 
                     {poll.choices.map(choice => {
@@ -63,9 +87,9 @@ export default function ViewPoll({ match }) {
                             <div className='px-5 py-4 border-t border-gray-400 flex justify-between items-center' key={choice._id}>
                                 {choice.name}
 
-                                {!voted ? (
-                                    <Button onClick={() => vote(choice._id)}>Vote</Button>
-                                ): <span className='text-blue-500'>29</span>}
+                                {voted ? (
+                                    <span className='text-blue-500'> {getChoicePercentage(choice)}% </span>
+                                ) :  <Button onClick={() => vote(choice._id)}>Vote</Button>}
                             </div>
                         )
                     })}
