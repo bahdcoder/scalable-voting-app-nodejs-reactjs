@@ -4,6 +4,7 @@ import * as serviceWorker from './serviceWorker';
 import { BrowserRouter, Link, Switch, Route } from 'react-router-dom';
 
 import Home from './pages/Home';
+import ViewPoll from './pages/ViewPoll'
 import CreatePoll from './pages/CreatePoll'
 
 ReactDOM.render(
@@ -20,6 +21,7 @@ ReactDOM.render(
         <Switch>
           <Route exact path='/' component={Home} />
           <Route path='/polls/create' component={CreatePoll} />
+          <Route path='/polls/:poll' component={ViewPoll} />
         </Switch>
       </div>
     </BrowserRouter>
